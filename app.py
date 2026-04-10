@@ -3,38 +3,6 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 app = Flask(__name__)
 app.secret_key = 'qualquer'
 
-@app.route('/cadastro', methods=['GET', 'POST'])
-def cadastro():
-    # methods=['GET', 'POST'] informa ao Flask que esta rota aceita AMBOS os métodos.
-    # GET: exibe o formulário vazio (quando o usuário chega na página).
-    # POST: processa os dados enviados (quando o usuário clica em "Enviar").
-    # Sem essa declaração, Flask aceita apenas GET por padrão.
-
-    if request.method == 'POST':
-        # Este bloco só executa quando o formulário foi enviado (método POST).
-
-        # request.form é um dicionário com todos os campos do formulário.
-        # A chave é o atributo 'name' do campo HTML.
-        nome = request.form['nome']
-        email = request.form['email']
-        cidade = request.form['cidade']
-
-        # Por enquanto apenas imprimimos no terminal — banco de dados vem na Aula 05.
-        print(f'Novo cadastro recebido: {nome} | {email} | {cidade}')
-
-        # flash() envia uma mensagem de feedback para o próximo template renderizado.
-        flash(f'Cadastro de {nome} realizado com sucesso!', 'success')
-
-        # redirect() + url_for() redireciona para outra rota após processar o POST.
-        # Este padrão (POST → redirect → GET) é chamado de PRG pattern e evita
-        # que o navegador reenvie o formulário ao recarregar a página.
-        return redirect(url_for('pagina_inicial'))
-
-    # Se o método for GET (ou seja, se chegamos aqui sem ser por POST):
-    # apenas renderizamos o formulário vazio.
-    return render_template('cadastro.html')
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
